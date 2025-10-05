@@ -12,6 +12,12 @@ class BinaryNode:
         self.left = left
         self.right = right
 
+    def __repr__(self):
+        return f"BinaryNode({self.value})"
+
+    def __str__(self):
+        return str(self.value)
+
     def update_height(self) -> None:
         left_height = self.left.get_height() if self.left else 0
         right_height = self.right.get_height() if self.right else 0
@@ -35,7 +41,7 @@ class BinaryNode:
     def set_left_child(self, left: BinaryNode | None) -> None:
         self.left = left
 
-    def get_righ_child(self) -> BinaryNode | None:
+    def get_right_child(self) -> BinaryNode | None:
         return self.right
 
     def set_right_child(self, right: BinaryNode | None) -> None:
@@ -65,7 +71,7 @@ class BinaryNode:
     def get_child_count(self) -> int:
         left_child_count = 1 if self.left else 0
         right_child_count = 1 if self.right else 0
-        return 1 + left_child_count + right_child_count
+        return left_child_count + right_child_count
 
     def get_subtree_nodes_count(self) -> int:
         left_subtree_node_count = (
