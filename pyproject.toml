@@ -1,0 +1,7 @@
+[project]
+name = "ADSA"
+version = "0.1.0"
+description = "A package for Advanced Data Structures and Algorithms"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
