@@ -177,10 +177,10 @@ def test_find_leftmost_and_rightmost():
     tree = BinaryTree([1, 2, 3, 4, 5])
     root = tree.get_root()
     assert root is not None
-    l = root.find_leftmost()
-    assert l is not None and l.get_value() == 1
-    r = root.find_rightmost()
-    assert r is not None and r.get_value() == 5
+    lm = root.find_leftmost()
+    assert lm is not None and lm.get_value() == 1
+    rm = root.find_rightmost()
+    assert rm is not None and rm.get_value() == 5
 
 
 def test_parent_child_relationships():
@@ -188,6 +188,7 @@ def test_parent_child_relationships():
     n5 = tree.insert(5)
     n3 = tree.insert(3)
     n7 = tree.insert(7)
+    assert n5 is not None and n3 is not None and n7 is not None
     assert n3.get_parent() == n5
     assert n7.get_parent() == n5
     assert n5.get_left_child() == n3

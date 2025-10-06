@@ -274,12 +274,12 @@ class BinaryTree:
             self.remove(pred_node_value)
             node.set_value(pred_node_value)
 
-        def make_right_backbone(self):
-            node = self.root
-            while node is not None:
-                temp = node.get_left_child()
-                if temp is not None:
-                    node.rotate_right()
-                    node = temp
-                else:
-                    node = node.get_right_child()
+    def make_right_backbone(self):
+        node = self.root
+        while node is not None:
+            temp = node.get_left_child()
+            if temp is not None:
+                node.rotate_right(self)
+                node = temp
+            else:
+                node = node.get_right_child()
