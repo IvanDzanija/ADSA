@@ -70,6 +70,7 @@ class BinaryNode:
                 node = node.get_right_child()
             else:
                 return node
+        return self
 
     def find_leftmost(self) -> BinaryNode | None:
         node = self.get_left_child()
@@ -260,12 +261,13 @@ class BinaryTree:
         else:
             assert node_child_count == 2
             # Deletion by copying
-            pred_node = node.get_left_child()
+            temp_node = node.get_left_child()
             pred_node_value = None
-            if pred_node is not None:
-                pred_node_rightmost = pred_node.find_rightmost()
-                if pred_node_rightmost is not None:
-                    pred_node_value = pred_node_rightmost.get_value()
+            if temp_node is not None:
+                pred_node = temp_node.find_rightmost()
+                if pred_node is not None:
+                    pred_node_value = pred_node.get_value()
+
             # succ_node_value =
             # node.get_right_child().find_leftmost().get_value())
             assert pred_node_value is not None
