@@ -72,24 +72,41 @@ class BinaryTree:
         if self.root is None:
             print("Tree is empty, nothing to remove!")
             return None
+
         node = self.root.query(value)
         if node is None:
             print(f"Node with value: {value} doesn't exist in the tree")
+
         node_parent = node.get_parent()
+
         node_child_count = node.get_child_count()
         if node_child_count == 0:
             if node_parent is None:
-                assert node == self.root
                 self.root = None
             elif node_parent.get_left_child() == node:
                 node_parent.set_left_child(None)
             elif node_parent.get_right_child() == node:
                 node_parent.set_right_child(None)
+
         elif node_child_count == 1:
             child_node = (
                 node.get_right_child()
                 if node.get_right_child()
                 else node.get_left_child()
             )
-            if node_parent.get_left_child() == node:
+
+            if node_parent is None:
+                if node.get_left_child():
+                    self.root = node.get_left_child()
+                elif node.get_right_child():
+                    self.root = node.get_right_child()
+
+            elif node_parent.get_left_child() == node:
                 node_parent.set_left_child(child_node)
+            elif node_parent.get_right_child() == node:
+                node_parent.set_right_child(child_node)
+
+        # Found node has to have 2 child nodes
+        else:
+            assert node_child_count == 2
+            # Deletion by copying
