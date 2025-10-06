@@ -10,7 +10,20 @@ class BinaryTree:
         if values is None:
             return None
         sorted_values = sorted(values)
-        self.root = self._create_balanced_tree(sorted_values)
+
+        # Creates balanced binary tree from sorted list
+        def _create_balanced_tree(values: list) -> BinaryNode | None:
+            n = len(values)
+            if n > 0:
+                i = (n // 2) + (n % 2)
+                root = BinaryNode(values[i - 1])
+                root.set_left_child(_create_balanced_tree(values[0 : i - 1]))
+                root.set_right_child(_create_balanced_tree(values[i:n]))
+                return root
+            else:
+                return None
+
+        self.root = _create_balanced_tree(sorted_values)
 
     def __str__(self) -> str:
         """Return a pretty string representation of the tree (rotated 90°)."""
@@ -29,18 +42,6 @@ class BinaryTree:
 
         _build_lines(self.root)
         return "\n".join(lines)
-
-    # Creates balanced binary tree from sorted list
-    def _create_balanced_tree(self, values: list) -> BinaryNode | None:
-        n = len(values)
-        if n > 0:
-            i = (n // 2) + (n % 2)
-            root = BinaryNode(values[i - 1])
-            root.set_left_child(self._create_balanced_tree(values[0 : i - 1]))
-            root.set_right_child(self._create_balanced_tree(values[i:n]))
-            return root
-        else:
-            return None
 
     def get_root(self) -> BinaryNode | None:
         return self.root
