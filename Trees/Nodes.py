@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from BinaryTree import BinaryTree
+
 
 class BinaryNode:
     height = -1
@@ -59,6 +61,22 @@ class BinaryNode:
     def make_root(self) -> None:
         self.parent = None
 
+    def find_rightmost(self) -> BinaryNode | None:
+        node = self.get_right_child()
+        while node:
+            if node.get_right_child():
+                node = node.get_right_child()
+            else:
+                return node
+
+    def find_leftmost(self) -> BinaryNode | None:
+        node = self.get_left_child()
+        while node:
+            if node.get_left_child():
+                node = node.get_left_child()
+            else:
+                return node
+
     # Essence of binary trees
     def query(self, value):
         if value < self.value and self.left:
@@ -90,3 +108,38 @@ class BinaryNode:
         if self.right is not None:
             right_height = self.right.get_height()
         return right_height - left_height
+
+    def rotate_right(self, tree: BinaryTree) -> None:
+        left_node = self.get_left_child()
+        if left_node is None:
+            return None
+        parent_node = self.get_parent()
+        if parent_node is None:
+            left_node.make_root()
+            tree.set_root(left_node)
+        else:
+            if parent_node.get_left_child() is self:
+                parent_node.set_left_child(left_node)
+            elif parent_node.get_right_child() is self:
+                parent_node.set_right_child(left_node)
+
+        temp = left_node.get_right_child()
+        left_node.set_right_child(self)
+        self.set_left_child(temp)
+
+    def rotate_left(self, tree: BinaryTree) -> None:
+        right_node = self.get_right_child()
+        if right_node is None:
+            return None
+        parent_node = self.get_parent()
+        if parent_node is None:
+            right_node.make_root()
+            tree.set_root(right_node)
+        else:
+            if parent_node.get_left_child() is self:
+                parent_node.set_left_child(right_node)
+            elif parent_node.get_right_child() is self:
+                parent_node.set_right_child(right_node)
+        temp = right_node.get_left_child()
+        right_node.set_left_child(self)
+        self.set_right_child(temp)

@@ -4,8 +4,13 @@ from Nodes import BinaryNode
 
 # This class does not provide support for duplicate value storage
 class BinaryTree:
-    def __init__(self, root: BinaryNode | None = None):
-        self.root = root
+    root = None
+
+    def __init__(self, values: list | None = None):
+        if values is None:
+            return None
+        sorted_values = sorted(values)
+        self.root = self._create_balanced_tree(sorted_values)
 
     def __str__(self) -> str:
         """Return a pretty string representation of the tree (rotated 90°)."""
@@ -25,25 +30,23 @@ class BinaryTree:
         _build_lines(self.root)
         return "\n".join(lines)
 
-    def find_rightmost(self) -> BinaryNode | None:
-        node = self.root
-        if node is None:
+    # Creates balanced binary tree from sorted list
+    def _create_balanced_tree(self, values: list) -> BinaryNode | None:
+        n = len(values)
+        if n > 0:
+            i = (n // 2) + (n % 2)
+            root = BinaryNode(values[i - 1])
+            root.set_left_child(self._create_balanced_tree(values[0 : i - 1]))
+            root.set_right_child(self._create_balanced_tree(values[i:n]))
+            return root
+        else:
             return None
-        while node:
-            if node.get_right_child():
-                node = node.get_right_child()
-            else:
-                return node
 
-    def find_leftmost(self) -> BinaryNode | None:
-        node = self.root
-        if node is None:
-            return None
-        while node:
-            if node.get_left_child():
-                node = node.get_left_child()
-            else:
-                return node
+    def get_root(self) -> BinaryNode | None:
+        return self.root
+
+    def set_root(self, node: BinaryNode) -> None:
+        self.root = node
 
     def binary_search(self, value) -> BinaryNode | None:
         if self.root is None:
@@ -76,6 +79,7 @@ class BinaryTree:
         node = self.root.query(value)
         if node is None:
             print(f"Node with value: {value} doesn't exist in the tree")
+            return None
 
         node_parent = node.get_parent()
 
@@ -110,3 +114,24 @@ class BinaryTree:
         else:
             assert node_child_count == 2
             # Deletion by copying
+            pred_node = node.get_left_child()
+            pred_node_value = None
+            if pred_node is not None:
+                pred_node_rightmost = pred_node.find_rightmost()
+                if pred_node_rightmost is not None:
+                    pred_node_value = pred_node_rightmost.get_value()
+            # succ_node_value =
+            # node.get_right_child().find_leftmost().get_value())
+            assert pred_node_value is not None
+            self.remove(pred_node_value)
+            node.set_value(pred_node_value)
+
+        def make_right_backbone(self):
+            node = self.root
+            while node is not None:
+                temp = node.get_left_child()
+                if temp is not None:
+                    node.rotate_right()
+                    node = temp
+                else:
+                    node = node.get_right_child()

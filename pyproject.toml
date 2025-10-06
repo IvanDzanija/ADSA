@@ -4,4 +4,7 @@ version = "0.1.0"
 description = "A package for Advanced Data Structures and Algorithms"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "jupyter>=1.1.1",
+    "pytest>=8.4.2",
+]
