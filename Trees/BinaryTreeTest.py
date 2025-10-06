@@ -1,22 +1,24 @@
-import pytest
 from BinaryTree import BinaryTree
 from Nodes import BinaryNode
 
 
-@pytest.fixture
 def sample_tree() -> BinaryTree:
     """
     Build the following binary search tree for testing:
                 5
               /   \
              3     7
-            / \\   / \\
+            / \   / \
            2  4  6   8
     """
     tree = BinaryTree()
     for value in [5, 3, 7, 2, 4, 6, 8]:
         tree.insert(value)
     return tree
+
+
+tree = sample_tree()
+print(tree)
 
 
 # -------------------------------------------------------
@@ -26,7 +28,7 @@ def test_insert_root():
     tree = BinaryTree()
     node = tree.insert(10)
     assert tree.root == node
-    assert node is not None and node.get_value() == 10
+    assert node.get_value() == 10
     assert str(tree.root) == "10"
 
 
