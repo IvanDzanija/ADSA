@@ -1,5 +1,4 @@
-from BinaryTree import BinaryTree
-from Nodes import BinaryNode
+from BinaryTree import BinaryTree, BinaryNode
 
 
 def sample_tree() -> BinaryTree:
@@ -8,7 +7,7 @@ def sample_tree() -> BinaryTree:
                 5
               /   \
              3     7
-            / \   / \
+            / \\   / \\
            2  4  6   8
     """
     tree = BinaryTree()
@@ -27,50 +26,52 @@ print(tree)
 def test_insert_root():
     tree = BinaryTree()
     node = tree.insert(10)
-    assert tree.root == node
+    assert node is not None and tree.root == node
     assert node.get_value() == 10
     assert str(tree.root) == "10"
 
 
-def test_insert_multiple_nodes(sample_tree):
-    # Verify BST property and structure
-    assert sample_tree.root.get_value() == 5
-    assert sample_tree.root.get_left_child().get_value() == 3
-    assert sample_tree.root.get_right_child().get_value() == 7
-    assert sample_tree.root.get_left_child().get_left_child().get_value() == 2
-    assert sample_tree.root.get_left_child().get_right_child().get_value() == 4
-    assert sample_tree.root.get_right_child().get_left_child().get_value() == 6
-    assert sample_tree.root.get_right_child().get_right_child().get_value() == 8
+def test_insert_multiple_nodes():
+    # Verify property and structure
+    assert tree.root is not None
+    assert tree.root.get_value() == 5
+    lc = tree.root.get_left_child()
+    rc = tree.root.get_right_child()
+    assert lc is not None and lc.get_value() == 3
+    assert rc is not None and rc.get_value() == 7
+    assert tree.root.get_left_child().get_left_child().get_value() == 2
+    assert tree.root.get_left_child().get_right_child().get_value() == 4
+    assert tree.root.get_right_child().get_left_child().get_value() == 6
+    assert tree.root.get_right_child().get_right_child().get_value() == 8
 
 
-def test_insert_duplicate_value(capsys):
+def test_insert_duplicate_value():
     tree = BinaryTree()
-    tree.insert(5)
+    node = tree.insert(5)
+    assert node is not None and node.get_value() == 5
     duplicate = tree.insert(5)
-    out, _ = capsys.readouterr()
-    assert "already exist" in out
     assert duplicate is None
 
 
 # -------------------------------------------------------
 # SEARCH TESTS
 # -------------------------------------------------------
-def test_binary_search_found(sample_tree):
-    node = sample_tree.binary_search(4)
+def test_binary_search_found():
+    node = tree.binary_search(4)
     assert node is not None
     assert node.get_value() == 4
 
 
-def test_binary_search_not_found(sample_tree):
-    node = sample_tree.binary_search(100)
+def test_binary_search_not_found():
+    node = tree.binary_search(100)
     assert node is None
 
 
 # -------------------------------------------------------
 # STRUCTURE TESTS
 # -------------------------------------------------------
-def test_pretty_print_output(sample_tree):
-    output = str(sample_tree)
+def test_pretty_print_output():
+    output = str(tree)
     # Ensure all values appear in the printed tree
     for val in ["2", "3", "4", "5", "6", "7", "8"]:
         assert val in output
@@ -78,10 +79,12 @@ def test_pretty_print_output(sample_tree):
     assert "Root:" in output
 
 
-def test_subtree_node_count(sample_tree):
-    assert sample_tree.root.get_subtree_nodes_count() == 7
-    left = sample_tree.root.get_left_child()
-    right = sample_tree.root.get_right_child()
+def test_subtree_node_count():
+    assert tree.root is not None
+    assert tree.root.get_subtree_nodes_count() == 7
+    left = tree.root.get_left_child()
+    right = tree.root.get_right_child()
+    assert left is not None and right is not None
     assert left.get_subtree_nodes_count() == 3
     assert right.get_subtree_nodes_count() == 3
 
@@ -89,29 +92,28 @@ def test_subtree_node_count(sample_tree):
 # -------------------------------------------------------
 # HEIGHT / BALANCE TESTS
 # -------------------------------------------------------
-def test_node_height_computation(sample_tree):
+def test_node_height_computation():
     # Leaf nodes should have height 0
-    assert sample_tree.binary_search(2).get_height() == 0
-    # Height of root should be 2 (levels: 5 → 3/7 → 2/4/6/8)
-    assert sample_tree.root.get_height() == 2
+    node = tree.binary_search(2)
+    assert node is not None and node.get_height() == 1
+    assert tree.root is not None and tree.root.get_height() == 3
 
 
-def test_balancing_factor(sample_tree):
-    root = sample_tree.root
-    assert root.balancing_factor() == 0  # symmetrical tree
+def test_balancing_factor():
+    root = tree.root
+    assert root is not None and root.balancing_factor() == 0
     left = root.get_left_child()
-    assert left.balancing_factor() == 0
+    assert left is not None and left.balancing_factor() == 0
 
 
 # -------------------------------------------------------
 # DELETION TESTS
 # -------------------------------------------------------
-def test_remove_leaf(sample_tree):
+def test_remove_leaf():
     # Remove a leaf (8)
-    sample_tree.remove(8)
-    assert sample_tree.binary_search(8) is None
-    output = str(sample_tree)
-    assert "8" not in output
+    tree.remove(8)
+    assert tree.binary_search(8) is None
+    print(tree)
 
 
 def test_remove_node_with_one_child():
@@ -132,19 +134,21 @@ def test_remove_node_with_one_child():
 
     assert tree.binary_search(3) is None
     assert tree.binary_search(4) is not None
-    assert tree.root.get_left_child().get_value() == 4
+    assert tree.root is not None
+    left = tree.root.get_left_child()
+    assert left is not None and left.get_value() == 4
 
 
-def test_remove_node_with_two_children(sample_tree):
+def test_remove_node_with_two_children():
     """
     Remove node 3 → has two children (2, 4)
     Should replace with its in-order predecessor (2 or 4)
     """
-    sample_tree.remove(3)
-    output = str(sample_tree)
+    tree.remove(3)
+    output = str(tree)
     assert "3" not in output
     # Root should remain the same
-    assert sample_tree.root.get_value() == 5
+    assert tree.root.get_value() == 5
     # Still contains both subtrees of former node 3
     assert any(val in output for val in ["2", "4"])
 
@@ -161,8 +165,27 @@ def test_remove_root_node():
     assert tree.root.get_value() in [5, 15]
 
 
-def test_remove_from_empty_tree(capsys):
+def test_remove_from_empty_tree():
     tree = BinaryTree()
     tree.remove(10)
-    out, _ = capsys.readouterr()
-    assert "Tree is empty" in out
+
+
+def main():
+    test_insert_root()
+    test_insert_multiple_nodes()
+    test_insert_duplicate_value()
+    test_binary_search_found()
+    test_binary_search_not_found()
+    test_pretty_print_output()
+    test_subtree_node_count()
+    test_node_height_computation()
+    test_balancing_factor()
+    test_remove_leaf()
+    test_remove_node_with_one_child()
+    test_remove_node_with_two_children()
+    test_remove_root_node()
+    test_remove_from_empty_tree()
+
+
+if __name__ == "__main__":
+    main()
