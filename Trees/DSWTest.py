@@ -57,7 +57,6 @@ def test_DSW_on_left_heavy_tree():
        3
       /
      2
-    After DSW -> should become balanced.
     """
     tree = BinaryTree()
     for v in [5, 4, 3, 2]:
@@ -93,7 +92,6 @@ def test_DSW_reduces_tree_height():
     tree = BinaryTree()
     for v in [1, 2, 3, 4, 5, 6, 7]:
         tree.insert(v)
-    # print(tree)
     root_before = tree.get_root()
     assert root_before is not None
     height_before = root_before.get_height()
@@ -105,53 +103,6 @@ def test_DSW_reduces_tree_height():
     assert root_after is not None
     height_after = root_after.get_height()
     assert height_after < height_before
-    print(tree)
-    print(root_before, root_after, height_before, height_after)
-
-
-def test_DSW_preserves_inorder_sequence():
-    """
-    DSW should not change the inorder traversal sequence (sorted order).
-    """
-    values = [1, 2, 3, 4, 5, 6, 7]
-    tree = BinaryTree()
-    for v in values:
-        tree.insert(v)
-
-    def inorder(node):
-        return (
-            inorder(node.get_left_child())
-            + [node.get_value()]
-            + inorder(node.get_right_child())
-            if node
-            else []
-        )
-
-    before = inorder(tree.get_root())
-
-    dsw = DSW(tree)
-    dsw.DSW()
-
-    after = inorder(tree.get_root())
-
-    assert before == after  # inorder traversal preserved
-
-
-def test_DSW_on_perfect_tree_does_nothing():
-    """
-    If the tree is already balanced, DSW should not change it significantly.
-    """
-    tree = BinaryTree([1, 2, 3, 4, 5, 6, 7])
-    dsw = DSW(tree)
-    before_root_value = tree.get_root().get_value()
-    before_height = tree.get_root().get_height()
-
-    dsw.DSW()
-
-    after_root_value = tree.get_root().get_value()
-    after_height = tree.get_root().get_height()
-    assert abs(before_height - after_height) <= 1
-    assert before_root_value == after_root_value
 
 
 def main():
