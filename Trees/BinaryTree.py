@@ -104,7 +104,7 @@ class BinaryNode:
         return 1 + left_subtree_node_count + right_subtree_node_count
 
     # Balancing factor is defined as BF(S) = h(R) - h(L)
-    def balancing_factor(self):
+    def balancing_factor(self) -> int:
         left_height, right_height = 0, 0
         if self.left is not None:
             left_height = self.left.get_height()
@@ -218,7 +218,8 @@ class BinaryTree:
                 return None
         return new_node
 
-    def remove(self, value) -> None:
+    # Returns the parent node of the removed node
+    def remove(self, value) -> BinaryNode | None:
         if self.root is None:
             print("Tree is empty, nothing to remove!")
             return None
@@ -273,6 +274,8 @@ class BinaryTree:
             assert pred_node_value is not None
             self.remove(pred_node_value)
             node.set_value(pred_node_value)
+
+        return node_parent
 
     def make_right_backbone(self):
         node = self.root
