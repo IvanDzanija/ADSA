@@ -22,6 +22,19 @@ def test_DSW_on_single_node_tree():
     assert root.get_right_child() is None
 
 
+def test_DSW_textbook_example():
+    tree = BinaryTree()
+    for v in [2, 4, 9, 11, 13, 19, 27]:
+        tree.insert(v)
+
+    dsw = DSW(tree)
+    dsw.DSW()
+
+    root = tree.get_root()
+    assert root is not None
+    assert root.get_value() == 11
+
+
 def test_DSW_on_unbalanced_right_tree():
     """
     Build a skewed tree (like a linked list):
@@ -42,7 +55,7 @@ def test_DSW_on_unbalanced_right_tree():
 
     root = tree.get_root()
     assert root is not None
-    assert root.get_value() == 2
+    assert root.get_value() == 3
     height = root.get_height()
     assert height <= ceil(log(root.get_subtree_nodes_count() + 1, 2)) + 1
 
@@ -61,13 +74,12 @@ def test_DSW_on_left_heavy_tree():
     tree = BinaryTree()
     for v in [5, 4, 3, 2]:
         tree.insert(v)
-
     dsw = DSW(tree)
     dsw.DSW()
 
     root = tree.get_root()
     assert root is not None
-    assert root.get_value() == 3
+    assert root.get_value() == 4
     left = root.get_left_child()
     right = root.get_right_child()
     assert (
@@ -106,12 +118,14 @@ def test_DSW_reduces_tree_height():
 
 
 def main():
+    test_DSW_textbook_example()
     test_DSW_on_empty_tree()
     test_DSW_on_single_node_tree()
     test_DSW_on_unbalanced_right_tree()
     test_DSW_on_left_heavy_tree()
     test_DSW_rotate_executes_without_error()
     test_DSW_reduces_tree_height()
+    print("All tests passed!")
 
 
 if __name__ == "__main__":

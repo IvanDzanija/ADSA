@@ -7,18 +7,18 @@ class DSW:
         self.tree = tree
 
     def DSW(self) -> None:
-        root = self.tree.get_root()
-        if root is None:
+        if self.tree.get_root() is None:
             return None
 
         self.tree.make_right_backbone()
+        root = self.tree.get_root()
+        assert root is not None
         node_count = root.get_subtree_nodes_count()
-        tree_height = ceil(log(node_count + 1, 2))
-        inner_node_count = pow(2, tree_height - 1) - 1
+        tree_height = int(log(node_count + 1, 2))
+        inner_node_count = pow(2, tree_height) - 1
         leaf_count = node_count - inner_node_count
         self._DSW_rotate(leaf_count)
-        i = leaf_count
-        # print(node_count, tree_height, inner_node_count, i)
+        i = inner_node_count
         while i > 1:
             i = i // 2
             self._DSW_rotate(i)
