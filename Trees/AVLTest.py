@@ -155,7 +155,6 @@ def test_avl_correctly_remove_textbook():
     tree.remove(45)
     tree.remove(37)
 
-    print(tree)
     root = tree.get_root()
     assert root is not None
     assert root.get_value() == 34
