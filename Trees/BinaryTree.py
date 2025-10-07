@@ -172,21 +172,30 @@ class BinaryTree:
         self.root = _create_balanced_tree(sorted_values)
 
     def __str__(self) -> str:
-        """Return a pretty string representation of the tree (rotated 90°)."""
         if self.root is None:
             return "(empty tree)"
 
         lines: list[str] = []
 
-        def _build_lines(
-            node: BinaryNode | None, level: int = 0, label: str = "Root:"
-        ) -> None:
+        def _build_lines(node, prefix: str = "", is_left: bool = True):
             if node is not None:
-                _build_lines(node.get_right_child(), level + 1, "R──")
-                lines.append("    " * level + f"{label} {node.get_value()}")
-                _build_lines(node.get_left_child(), level + 1, "L──")
+                # Add current node
+                connector = "└── " if is_left else "┌── "
+                lines.append(prefix + connector + str(node.get_value()))
 
-        _build_lines(self.root)
+                # Prepare prefix for children
+                child_prefix = prefix + ("    " if is_left else "│   ")
+                left = node.get_left_child()
+                right = node.get_right_child()
+
+                # Print left then right (so left appears first vertically)
+                if left or right:
+                    if left:
+                        _build_lines(left, child_prefix, True)
+                    if right:
+                        _build_lines(right, child_prefix, False)
+
+        _build_lines(self.root, "", True)
         return "\n".join(lines)
 
     def get_root(self) -> BinaryNode | None:
