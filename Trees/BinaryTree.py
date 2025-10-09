@@ -63,6 +63,12 @@ class BinaryNode:
     def make_root(self) -> None:
         self.parent = None
 
+    def get_color(self) -> str:
+        return self.color
+
+    def set_color(self, color: str) -> None:
+        self.color = color
+
     def find_rightmost(self) -> BinaryNode | None:
         node = self.get_right_child()
         while node:
