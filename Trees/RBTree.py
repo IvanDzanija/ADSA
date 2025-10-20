@@ -16,8 +16,9 @@ class RBTree(BinaryTree):
                 node = new_node_lc
             else:
                 node = new_node.get_right_child()
-        node.set_color("red")
-        self._restructure(node)
+        if node is not None:
+            node.set_color("red")
+            self._restructure(node)
 
     def _restructure(self, node):
         return 0

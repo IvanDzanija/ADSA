@@ -22,3 +22,6 @@ class TrieNode:
             self.child_count += 1
             return new_node
         return node
+
+    def remove(self, value: str) -> bool:
+        return False
