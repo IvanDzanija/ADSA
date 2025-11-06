@@ -69,6 +69,12 @@ class BinaryNode:
     def set_color(self, color: str) -> None:
         self.color = color
 
+    def swap_color(self) -> None:
+        if self.color == "red":
+            self.color = "black"
+        else:
+            self.color = "red"
+
     def find_rightmost(self) -> BinaryNode | None:
         node = self.get_right_child()
         while node:
@@ -292,3 +298,46 @@ class BinaryTree:
                 node = temp
             else:
                 node = node.get_right_child()
+
+    # -------------------------------------------------------
+    # TRAVERSAL HELPERS
+    # -------------------------------------------------------
+
+    def inorder_nodes(self):
+        """Generator yielding nodes in in-order (Left → Root → Right)."""
+
+        def _inorder(node):
+            if node is None:
+                return
+            yield from _inorder(node.get_left_child())
+            yield node
+            yield from _inorder(node.get_right_child())
+
+        if self.root is not None:
+            yield from _inorder(self.root)
+
+    def preorder_nodes(self):
+        """Generator yielding nodes in pre-order (Root → Left → Right)."""
+
+        def _preorder(node):
+            if node is None:
+                return
+            yield node
+            yield from _preorder(node.get_left_child())
+            yield from _preorder(node.get_right_child())
+
+        if self.root is not None:
+            yield from _preorder(self.root)
+
+    def postorder_nodes(self):
+        """Generator yielding nodes in post-order (Left → Right → Root)."""
+
+        def _postorder(node):
+            if node is None:
+                return
+            yield from _postorder(node.get_left_child())
+            yield from _postorder(node.get_right_child())
+            yield node
+
+        if self.root is not None:
+            yield from _postorder(self.root)
