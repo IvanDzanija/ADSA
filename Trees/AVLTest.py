@@ -174,6 +174,7 @@ def main():
     test_avl_no_rebalance_needed()
     test_avl_correctly_insert_textbook()
     test_avl_correctly_remove_textbook()
+    print("All AVL tests passed.")
     return 0
 
 
