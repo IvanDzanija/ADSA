@@ -1,4 +1,6 @@
 from Huffman import Huffman
+import random
+import string
 
 
 def build_huffman():
@@ -97,12 +99,44 @@ def test_huffman_textbook_mississippi():
                 assert not codes[i].startswith(codes[j])
 
 
+def test_huffman_randomized(n=1000):
+    """
+    Generates n random strings, encodes them, decodes them,
+    and verifies the output matches the input.
+    """
+
+    # Define the pool of characters to draw from
+    char_pool = string.ascii_letters + string.digits + string.punctuation + " "
+
+    for _ in range(n):
+        # Generate a random length between 0 and 100
+        length = random.randint(0, 100)
+
+        # Create random string
+        text = "".join(random.choice(char_pool) for _ in range(length))
+
+        try:
+            # Perform round-trip
+            h = build_huffman()
+            encoded = h.encode(text)
+            decoded = h.decode(encoded)
+
+            # Verify
+            assert decoded == text, (
+                f"Mismatch! Original: {text!r}, Decoded: {decoded!r}"
+            )
+        except Exception as e:
+            print(f"Failed on input: {text!r}")
+            raise e
+
+
 def main():
     test_huffman_basic_round_trip()
     test_huffman_manual_build()
     test_huffman_single_character_edge_case()
     test_huffman_empty_string()
     test_huffman_textbook_mississippi()
+    test_huffman_randomized(1000)
     print("All Huffman tests passed.")
 
 
